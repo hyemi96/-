@@ -15,8 +15,7 @@
 </style>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=A~~~~~~~~8" ></script>
 <script type="text/javascript">
-$(document).ready(function() { 
-		
+$(document).ready(function() { 	
 	getLocation();
 	
     $("#btnSearch").click(function() {
@@ -75,7 +74,7 @@ function enterkey() {
 function initialize(lat , lon) {
 	
 	console.log(lat, lon);
-	
+
 	$("#layer").html(`
 			<div class="title">
 				<strong>검색위치 :</strong> <span id="title">도시명</span>
@@ -90,18 +89,18 @@ function initialize(lat , lon) {
 				<strong>날씨 :</strong> <span id="weatherUi">날씨를 조회할 곳을 검색해보세요</span>
 			</div>
 			`);
-	
+
 	$("#positionList").html(`
-					<tr>
-					<td style="height: 50px;" colspan="5"> 조회 내역이 없습니다. </td>
-					</tr>
-					`);
-	
+				<tr>
+				<td style="height: 50px;" colspan="5"> 조회 내역이 없습니다. </td>
+				</tr>
+				`);
+
 	$("#hide").hide();
-	
+
 	//지도에 기본값을 현위치로 표출하기
 	geocoder = new google.maps.Geocoder();
-	
+
 	var latlng = new google.maps.LatLng(lat, lon);
 	var mapOptions = {
 	  zoom: 10,
@@ -173,7 +172,7 @@ function codeAddress() {
 		$("#positionList").html(innerHTML);
 		
 		weather();/* 구한위도 경도로 날씨 검색 */
-        airPollution();/* 구한위도 경도로 미세먼지 검색 */
+        	airPollution();/* 구한위도 경도로 미세먼지 검색 */
 	    
 	  } else {
 	    //alert('Geocode was not successful for the following reason: ' + status);
@@ -305,9 +304,6 @@ var apiURI ="http://api.openweathermap.org/data/2.5/air_pollution?lat="+lat+"&lo
 	    async: "false",
 	    success: function(resp) {
 
-	        //console.log("미세먼지 정도 : "+ (resp.list[0].main.aqi) );
-	        //console.log("현재날짜 : "+ resp.list[0].dt);
-	        
 	        if(resp.list[0].main.aqi =="1"){
 	        	$("#airImg").html(`<span>매우 좋음</span>`);
 	        }else if(resp.list[0].main.aqi =="2"){
@@ -354,7 +350,6 @@ var apiURI ="http://api.openweathermap.org/data/2.5/air_pollution?lat="+lat+"&lo
         <div class="row">
             <div class="col-sm-12 mb-5">
                 <div class="mg-t-35">
-                    <!--===========form 예시2=============-->
                     <div class="border bg-gray-50 rounded">
                         <div class="p-3">
                             <form:form commandName="FaqVO" id="fm" name="fm" method="post" onSubmit="return false;">
@@ -373,7 +368,6 @@ var apiURI ="http://api.openweathermap.org/data/2.5/air_pollution?lat="+lat+"&lo
                             </form:form>
                         </div>
                     </div>
-                    <!--===========/FORM 예시2=============-->
                 </div>
                 <!-- 지도맵 시작 -->
                 <div class="mg-t-35">
