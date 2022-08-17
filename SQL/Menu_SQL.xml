@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uhygeramgr.menu.service.impl.MenuServiceDAO">
+
+	<select id="selectMenuList" parameterType="menuVO" resultType="egovMap">
+		/** selectMenuList ::: 싸이트정보   */
+		<![CDATA[ 		
+			WITH MENU_CTE ( MENU_CD, MENU_NM, UP_MENU_CD, DEPTH, LEVEL, SORT )
+			AS (
+			
+				SELECT 
+					A.MENU_CD 
+					, A.MENU_NM
+					, A.UP_MENU_CD
+					, 0 AS DEPTH
+					, 0 AS LEVEL
+					, CONVERT( VARCHAR(100), A.MENU_CD ) AS SORT
+				FROM HYGERA.DBO.MENU_MST_T A 
+				WHERE ISNULL( A.UP_MENU_CD, '' ) = '' 
+				OR ISNULL( A.UP_MENU_CD, '' ) = '0'
+			]]> 
+			<if test="sysCd != null and !sysCd.equals('')">
+				AND A.SYS_CD = #{sysCd}
+			</if>
+			<if test="useYn != null and !useYn.equals('')">
+				AND A.USE_YN = #{useYn}
+			</if>
+
+		<![CDATA[ 
+			
+				UNION ALL
+			
+				SELECT 
+					B.MENU_CD 
+					, B.MENU_NM 
+					, B.UP_MENU_CD
+					, C.DEPTH + 1 AS DEPTH
+					, C.LEVEL + 1 AS LEVEL
+					, CONVERT( VARCHAR(100), C.SORT + ' < ' + RIGHT( '00' + CONVERT( VARCHAR(100), B.MENU_ORD ), 3 ) )  AS SORT
+				FROM HYGERA.DBO.MENU_MST_T B, MENU_CTE C
+				WHERE B.UP_MENU_CD = C.MENU_CD
+			]]>
+			<if test="sysCd != null and !sysCd.equals('')">
+				AND	B.SYS_CD = #{sysCd} 
+			</if>
+			<if test="useYn != null and !useYn.equals('')">
+				AND B.USE_YN = #{useYn} 
+			</if>
+
+		<![CDATA[ 
+				)
+				SELECT 
+					EB.SYS_CD
+					, CASE 
+						WHEN EB.SYS_CD = 'A' THEN '관리자'
+						WHEN EB.SYS_CD = 'B' THEN '요양시설(DID)'
+						WHEN EB.SYS_CD = 'C' THEN 'B2C'
+					 END AS SYS_CD_NM
+					, EA.MENU_CD
+					, EA.MENU_NM
+					, EA.UP_MENU_CD
+					, ISNULL( ( SELECT IA.MENU_NM FROM HYGERA.DBO.MENU_MST_T IA WHERE IA.MENU_CD = EA.UP_MENU_CD ),'') AS UP_MENU_NM
+					, EB.MENU_TYPE
+					, CASE 
+						WHEN EB.MENU_TYPE = '0' THEN '상위메뉴'
+						WHEN EB.MENU_TYPE = '1' THEN '하위메뉴(상세페이지)'
+						WHEN EB.MENU_TYPE = '2' THEN '기타페이지'
+					 END AS MENU_TYPE_NM
+					, EB.MENU_LEVEL
+					, EB.MENU_ORD
+					, EB.PRG_URL
+					, EB.ICON
+					, EB.TARGET_TYPE
+					, EB.USE_YN
+					, EA.DEPTH
+					, EA.LEVEL
+					, EA.SORT 
+				    , CONVERT( VARCHAR(10), EB.CREATED_AT, 121) AS CREATED_AT
+				    , EB.CREATED_ID AS createdId
+				    , CONVERT( VARCHAR(10), EB.UPDATED_AT, 121) AS UPDATED_AT
+				    , EB.UPDATED_ID  AS updatedId
+				FROM MENU_CTE EA 
+					INNER JOIN HYGERA.DBO.MENU_MST_T EB ON EB.MENU_CD = EA.MENU_CD
+				ORDER BY EA.SORT ASC
+          ]]>
+		
+	</select>
+	<select id="selectUpMenuList" parameterType="menuVO" resultType="egovMap">
+		/** selectUpMenuList ::: 싸이트정보   */
+		<![CDATA[  
+		     SELECT 
+                         A.SYS_CD
+                        ,A.MENU_CD
+                        ,A.MENU_NM
+                        ,A.UP_MENU_CD
+                        ,A.MENU_TYPE
+                        ,A.MENU_LEVEL
+                        ,A.MENU_ORD
+                        ,A.PRG_URL
+                        ,A.ICON
+                        ,A.USE_YN
+                        ,A.CREATED_AT
+                        ,A.CREATED_ID
+                        ,A.UPDATED_AT
+                        ,A.UPDATED_ID
+            FROM HYGERA.DBO.MENU_MST_T A
+			WHERE 1=1
+			AND UP_MENU_CD = '0'
+			AND A.USE_YN = 'Y'  			
+		]]>
+		
+	</select>
+	<select id="selectMenuDetail" parameterType="menuVO" resultType="egovMap">
+		/** selectMenuDetail ::: 싸이트정보   */
+		<![CDATA[
+			SELECT
+		    	A.SYS_CD AS sysCd
+				, A.MENU_CD AS menuCd
+				, A.MENU_NM AS menuNm
+				, A.UP_MENU_CD AS upMenuCd
+		  ]]>
+		<if test="sysCd != 0">
+				,(SELECT B.MENU_NM FROM HYGERA.DBO.MENU_MST_T B WHERE B.MENU_CD = A.UP_MENU_CD) AS upMenuNm 
+		</if>
+		<![CDATA[    		      
+		      , A.MENU_TYPE AS menuType
+		      , A.MENU_LEVEL AS menuLevel
+		      , A.MENU_ORD AS menuOrd
+		      , A.PRG_URL AS prgUrl
+		      , A.ICON AS icon
+		      , A.TARGET_TYPE AS targetType
+		      , A.USE_YN AS useYn
+		      , A.CREATED_ID AS createdId
+		      , A.CREATED_AT AS createdAt
+		      , A.UPDATED_ID AS updatedId
+		      , A.UPDATED_AT AS updatedAt
+		    FROM HYGERA.DBO.MENU_MST_T A
+		    WHERE 1=1
+		]]>
+		<if test="menuCd != null">
+			AND A.MENU_CD = #{menuCd} 
+		</if>
+	</select>
+	<insert id="insertMenu" parameterType="menuVO" >
+		/** insertMenu ::: 메뉴등록   */
+	<![CDATA[
+			INSERT INTO HYGERA.DBO.MENU_MST_T (
+				SYS_CD
+				, MENU_CD
+				, MENU_NM
+				, UP_MENU_CD
+				, MENU_TYPE
+				, MENU_LEVEL
+				, MENU_ORD
+				, PRG_URL
+				, ICON
+				, TARGET_TYPE
+				, USE_YN
+				, CREATED_ID
+			) VALUES(
+				#{sysCd}
+				, #{menuCd}
+				, #{menuNm}
+				, #{upMenuCd}
+				, #{menuType}
+				, #{menuLevel}
+				, #{menuOrd}
+				, #{prgUrl}
+				, #{icon}
+				, #{targetType}
+				, #{useYn}
+				, #{createdId}
+			)
+		]]>
+		
+	</insert>
+	<update id="updateMenu" parameterType="menuVO" >
+		/** updateMenu ::: 메뉴수정   */
+		<![CDATA[
+			UPDATE HYGERA.DBO.MENU_MST_T SET
+		    	SYS_CD = #{sysCd}
+		      , MENU_NM = #{menuNm}
+		      , UP_MENU_CD = #{upMenuCd}
+		      , MENU_TYPE = #{menuType}
+		      , MENU_LEVEL = #{menuLevel}
+		      , MENU_ORD = #{menuOrd}
+		      , PRG_URL = #{prgUrl}
+		      , ICON = #{icon}
+		      , TARGET_TYPE = #{targetType}
+		      , USE_YN = #{useYn}
+		      , UPDATED_ID = #{updatedId}
+		    WHERE MENU_CD = #{menuCd}
+		]]>
+		
+	</update>
+	<delete id="deleteMenu" parameterType="menuVO" >
+		/** deleteMenu ::: 메뉴 삭제   */
+	<![CDATA[
+		UPDATE HYGERA.DBO.MENU_MST_T SET		    	
+		      , USE_YN = 'N'
+		      , UPDATED_ID = #{updatedId}
+		    WHERE MENU_CD = #{menuCd}
+		]]>
+		
+	</delete>
+</mapper>
