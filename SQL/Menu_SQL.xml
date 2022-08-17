@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.uhygeramgr.menu.service.impl.MenuServiceDAO">
+<mapper namespace="com.projectName.menu.service.impl.MenuServiceDAO">
 
 	<select id="selectMenuList" parameterType="menuVO" resultType="egovMap">
 		/** selectMenuList ::: 싸이트정보   */
@@ -16,7 +16,7 @@
 					, 0 AS DEPTH
 					, 0 AS LEVEL
 					, CONVERT( VARCHAR(100), A.MENU_CD ) AS SORT
-				FROM HYGERA.DBO.MENU_MST_T A 
+				FROM DBO.MENU_MST_T A 
 				WHERE ISNULL( A.UP_MENU_CD, '' ) = '' 
 				OR ISNULL( A.UP_MENU_CD, '' ) = '0'
 			]]> 
@@ -38,7 +38,7 @@
 					, C.DEPTH + 1 AS DEPTH
 					, C.LEVEL + 1 AS LEVEL
 					, CONVERT( VARCHAR(100), C.SORT + ' < ' + RIGHT( '00' + CONVERT( VARCHAR(100), B.MENU_ORD ), 3 ) )  AS SORT
-				FROM HYGERA.DBO.MENU_MST_T B, MENU_CTE C
+				FROM DBO.MENU_MST_T B, MENU_CTE C
 				WHERE B.UP_MENU_CD = C.MENU_CD
 			]]>
 			<if test="sysCd != null and !sysCd.equals('')">
@@ -54,13 +54,13 @@
 					EB.SYS_CD
 					, CASE 
 						WHEN EB.SYS_CD = 'A' THEN '관리자'
-						WHEN EB.SYS_CD = 'B' THEN '요양시설(DID)'
+						WHEN EB.SYS_CD = 'B' THEN 'B2B 시설'
 						WHEN EB.SYS_CD = 'C' THEN 'B2C'
 					 END AS SYS_CD_NM
 					, EA.MENU_CD
 					, EA.MENU_NM
 					, EA.UP_MENU_CD
-					, ISNULL( ( SELECT IA.MENU_NM FROM HYGERA.DBO.MENU_MST_T IA WHERE IA.MENU_CD = EA.UP_MENU_CD ),'') AS UP_MENU_NM
+					, ISNULL( ( SELECT IA.MENU_NM FROM DBO.MENU_MST_T IA WHERE IA.MENU_CD = EA.UP_MENU_CD ),'') AS UP_MENU_NM
 					, EB.MENU_TYPE
 					, CASE 
 						WHEN EB.MENU_TYPE = '0' THEN '상위메뉴'
@@ -81,7 +81,7 @@
 				    , CONVERT( VARCHAR(10), EB.UPDATED_AT, 121) AS UPDATED_AT
 				    , EB.UPDATED_ID  AS updatedId
 				FROM MENU_CTE EA 
-					INNER JOIN HYGERA.DBO.MENU_MST_T EB ON EB.MENU_CD = EA.MENU_CD
+					INNER JOIN DBO.MENU_MST_T EB ON EB.MENU_CD = EA.MENU_CD
 				ORDER BY EA.SORT ASC
           ]]>
 		
@@ -104,7 +104,7 @@
                         ,A.CREATED_ID
                         ,A.UPDATED_AT
                         ,A.UPDATED_ID
-            FROM HYGERA.DBO.MENU_MST_T A
+            FROM DBO.MENU_MST_T A
 			WHERE 1=1
 			AND UP_MENU_CD = '0'
 			AND A.USE_YN = 'Y'  			
@@ -115,13 +115,13 @@
 		/** selectMenuDetail ::: 싸이트정보   */
 		<![CDATA[
 			SELECT
-		    	A.SYS_CD AS sysCd
+		    		A.SYS_CD AS sysCd
 				, A.MENU_CD AS menuCd
 				, A.MENU_NM AS menuNm
 				, A.UP_MENU_CD AS upMenuCd
 		  ]]>
 		<if test="sysCd != 0">
-				,(SELECT B.MENU_NM FROM HYGERA.DBO.MENU_MST_T B WHERE B.MENU_CD = A.UP_MENU_CD) AS upMenuNm 
+				,(SELECT B.MENU_NM FROM DBO.MENU_MST_T B WHERE B.MENU_CD = A.UP_MENU_CD) AS upMenuNm 
 		</if>
 		<![CDATA[    		      
 		      , A.MENU_TYPE AS menuType
@@ -135,7 +135,7 @@
 		      , A.CREATED_AT AS createdAt
 		      , A.UPDATED_ID AS updatedId
 		      , A.UPDATED_AT AS updatedAt
-		    FROM HYGERA.DBO.MENU_MST_T A
+		    FROM DBO.MENU_MST_T A
 		    WHERE 1=1
 		]]>
 		<if test="menuCd != null">
@@ -145,7 +145,7 @@
 	<insert id="insertMenu" parameterType="menuVO" >
 		/** insertMenu ::: 메뉴등록   */
 	<![CDATA[
-			INSERT INTO HYGERA.DBO.MENU_MST_T (
+			INSERT INTO DBO.MENU_MST_T (
 				SYS_CD
 				, MENU_CD
 				, MENU_NM
@@ -178,7 +178,7 @@
 	<update id="updateMenu" parameterType="menuVO" >
 		/** updateMenu ::: 메뉴수정   */
 		<![CDATA[
-			UPDATE HYGERA.DBO.MENU_MST_T SET
+			UPDATE DBO.MENU_MST_T SET
 		    	SYS_CD = #{sysCd}
 		      , MENU_NM = #{menuNm}
 		      , UP_MENU_CD = #{upMenuCd}
@@ -197,7 +197,7 @@
 	<delete id="deleteMenu" parameterType="menuVO" >
 		/** deleteMenu ::: 메뉴 삭제   */
 	<![CDATA[
-		UPDATE HYGERA.DBO.MENU_MST_T SET		    	
+		UPDATE DBO.MENU_MST_T SET		    	
 		      , USE_YN = 'N'
 		      , UPDATED_ID = #{updatedId}
 		    WHERE MENU_CD = #{menuCd}
