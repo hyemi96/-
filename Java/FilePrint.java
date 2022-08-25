@@ -14,7 +14,7 @@ public class FilePrint implements ActionListener{
 	FilePrint(JTable table){
 		this.table = table;
 	}
-	// JTableÀÇ ³»¿ëÀ» È­ÀÏ¿¡ Ãâ·Â
+	// JTableì˜ ë‚´ìš©ì„ í™”ì¼ì— ì¶œë ¥
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -60,7 +60,7 @@ public class FilePrint implements ActionListener{
 		} catch (IOException e1) {
 			e1.printStackTrace();
 
-		} finally {
+		} finally { //finally : ë¬´ì¡°ê±´ ì‹¤í–‰í•˜ëŠ” êµ¬ë¬¸ *ëŒ€ì‹ , ë¬´í•œë¡œí”„ë¥¼ ëŒ ìˆ˜ ìˆê¸°ë•Œë¬¸ì— ì‚¬ìš©ì— ì¡°ì‹¬í•´ì•¼í•¨.
 			if(bw != null) {
 				try {
 					bw.close();
@@ -73,9 +73,9 @@ public class FilePrint implements ActionListener{
 }
 
 /*
-ÀÌ¸§/±¹¾î/¿µ¾î/¼öÇĞ
-½á´Ï/33/44/55
-À±¾Æ/77/88/99
+ì´ë¦„/êµ­ì–´/ì˜ì–´/ìˆ˜í•™
+ì¨ë‹ˆ/33/44/55
+ìœ¤ì•„/77/88/99
  */
 
 
