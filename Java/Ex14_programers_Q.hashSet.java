@@ -1,5 +1,7 @@
 import java.util.HashSet;
 
+//programers poketmon lev.1 Q.hashSet 
+
 class Solution {
     public int solution(int[] nums) {
         int answer = 0; //내가 고를 수 있는 최대 종류의 마리의 수
