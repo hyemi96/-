@@ -1,4 +1,4 @@
-package com.uhygeramgr.file.web;
+package com.projectName.file.web;
 
 
 import java.io.BufferedInputStream;
@@ -25,14 +25,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.uhygeramgr.file.web.FileController;
+import com.projectName.file.web.FileController;
 
 import egovframework.util.CommonUtils;
 import egovframework.util.Globals;
 
-import com.uhygeramgr.cmm.CmmInterface;
-import com.uhygeramgr.file.model.FileVO;
-import com.uhygeramgr.file.service.FileService;
+import com.projectName.cmm.CmmInterface;
+import com.projectName.file.model.FileVO;
+import com.projectName.file.service.FileService;
 
 /**
  * 시스템      : 코어
