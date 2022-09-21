@@ -1,9 +1,9 @@
-package com.mgr.file.service.impl;
+package com.projectName.file.service.impl;
 
 
 import org.springframework.stereotype.Repository;
 
-import com.mgr.file.model.FileVO;
+import com.projectName.file.model.FileVO;
 
 import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 
