@@ -1,4 +1,4 @@
-package com.uhygeramgr.file.model;
+package com.projectName.file.model;
 
 import java.io.Serializable;
 import java.util.Date;
