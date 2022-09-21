@@ -1,10 +1,10 @@
-package com.uhygeramgr.file.service.impl;
+package com.projectName.file.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.uhygeramgr.file.model.FileVO;
-import com.uhygeramgr.file.service.FileService;
-import com.uhygeramgr.group.service.impl.GroupServiceDAO;
+import com.projectName.file.model.FileVO;
+import com.projectName.file.service.FileService;
+import com.projectName.group.service.impl.GroupServiceDAO;
 
 import javax.annotation.Resource;
 
