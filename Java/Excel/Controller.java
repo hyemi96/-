@@ -37,7 +37,7 @@
 		list = statisticService.aiRawdataList(rawdataVO);
 
 		title = "AI Rawdata List";
-		header = new String[] { "순번", "RAWDATA SEQ", "CLIENT UID", "DEVICE UID", "R VALUE", "C VALUE", "L체결", "R체결",
+		header = new String[] { "순번", "RAWDATA SEQ", "CLIENT UID", "DEVICE UID", "R컬럼값", "C컬럼값", "1컬럼값", "2컬럼값",
 				"시간", "패턴명", "패턴코드값" };
 
 		if (list != null) {
