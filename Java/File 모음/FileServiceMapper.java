@@ -1,8 +1,8 @@
-package com.uhygeramgr.file.service.mapper;
+package com.projectName.file.service.mapper;
 
 import org.springframework.stereotype.Repository;
 
-import com.uhygeramgr.file.model.FileVO;
+import com.projectName.file.model.FileVO;
 
 @Repository("FileServiceMapper")
 public interface FileServiceMapper {
