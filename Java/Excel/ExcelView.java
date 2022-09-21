@@ -25,7 +25,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
-import com.uhygeramgr.file.web.FileController;
+import com.projectName.file.web.FileController;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
