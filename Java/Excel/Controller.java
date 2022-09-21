@@ -50,10 +50,10 @@
 				v.put("rawdataSeq", rVO.get("seq"));
 				v.put("clientUid", rVO.get("clientUid"));
 				v.put("deviceUid", rVO.get("deviceUid"));
-				v.put("rVal", rVO.get("rVal"));
-				v.put("cVal", rVO.get("cVal"));
-				v.put("connResistanceLeft", rVO.get("connResistanceLeft"));
-				v.put("connResistanceRight", rVO.get("connResistanceRight"));
+				v.put("r", rVO.get("r"));
+				v.put("c", rVO.get("c"));
+				v.put("Left", rVO.get("Left"));
+				v.put("Right", rVO.get("Right"));
 				v.put("collectedAt", rVO.get("collectedAt"));
 				v.put("patternTypeName", patternTypeNameResult);
 				v.put("patternType", rawdataVO.getPatternType());
