@@ -1,8 +1,8 @@
-package com.uhygeramgr.file.service;
+package com.projectName.file.service;
 
 import java.util.List;
 
-import com.uhygeramgr.file.model.FileVO;
+import com.projectName.file.model.FileVO;
 
 public interface FileService {
 	
